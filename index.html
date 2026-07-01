@@ -1584,6 +1584,36 @@
           grid-template-columns: 1fr;
           gap: 40px;
         }
+        .exp-layout {
+          grid-template-columns: 1fr;
+          gap: 36px;
+        }
+        .exp-layout > *,
+        .exp-item,
+        .exp-body {
+          min-width: 0;
+        }
+        .exp-item {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 16px;
+          width: 100%;
+          max-width: 100%;
+          padding: 24px 0;
+        }
+        .exp-item:hover {
+          padding-left: 0;
+        }
+        .exp-timeline {
+          min-width: 0;
+          width: 100%;
+          flex-direction: row;
+          align-items: center;
+          padding-top: 0;
+        }
+        .exp-period {
+          white-space: nowrap;
+        }
         .testimonial-layout {
           grid-template-columns: 1fr;
         }
@@ -1714,7 +1744,7 @@
             <span class="hero-stat-label">Projects<br />completed</span>
           </div>
           <div>
-            <span class="hero-stat-value">+10</span>
+            <span class="hero-stat-value">+13</span>
             <span class="hero-stat-label">Credentials<br />earned</span>
           </div>
         </div>
@@ -1768,7 +1798,7 @@
             <div class="stat-label">Projects<br />Completed.</div>
           </div>
           <div class="stat-item reveal-scale delay-3">
-            <div class="stat-number" data-count="10" data-suffix="+">0</div>
+            <div class="stat-number" data-count="13" data-suffix="+">0</div>
             <div class="stat-label">Certifications<br />Earned.</div>
           </div>
           <div class="stat-item reveal-scale delay-4">
@@ -1785,7 +1815,7 @@
         <div class="service-card active reveal-up">
           <div class="service-icon">&lt;/&gt;</div>
           <h3>Full Stack<br />Developer.</h3>
-          <p class="project-count">17 Projects</p>
+          <p class="project-count">18 Projects</p>
         </div>
         <div class="service-card reveal-up delay-2">
           <div class="service-icon">AI</div>
@@ -1917,6 +1947,37 @@
               target="_blank"
               rel="noopener noreferrer"
               >Live site ↗</a
+            >
+          </div>
+        </div>
+        <div class="work-card reveal-up delay-4">
+          <div class="work-card-visual">
+            <div class="work-overlay">
+              <a
+                href="https://github.com/naimurerahaman/queuestorm-investigator"
+                class="work-visit-btn"
+                target="_blank"
+                rel="noopener noreferrer"
+                >View Project ↗</a
+              >
+            </div>
+            <span class="work-icon">🛡️</span>
+            <span class="tech-badge">Fintech API</span>
+            <span class="particle" style="top: 28%; left: 22%"></span>
+            <span class="particle" style="top: 58%; left: 74%"></span>
+            <span class="particle" style="top: 70%; left: 48%"></span>
+          </div>
+          <div class="work-card-info">
+            <h3>Queuestorm-<br />Investigator.</h3>
+            <p class="work-tags">
+              Safety-guarded fintech support API for evidence-backed routing
+            </p>
+            <a
+              href="https://naimurerahaman-queuestorm-investigator.hf.space/"
+              class="work-ext-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Live API ↗</a
             >
           </div>
         </div>
@@ -2059,31 +2120,46 @@
             <span class="cert-arrow">→</span>
           </div>
           <div class="cert-item reveal-right delay-1 line-draw">
-            <span class="cert-issuer">Meta</span>
-            <span class="cert-name">Intro to Front-end Development</span>
+            <span class="cert-issuer">Grameenphone</span>
+            <span class="cert-name">Network Smarter with AI</span>
             <span class="cert-arrow">→</span>
           </div>
           <div class="cert-item reveal-right delay-2 line-draw">
             <span class="cert-issuer">Meta</span>
-            <span class="cert-name">Intro to Mobile Development</span>
+            <span class="cert-name">Intro to Front-end Development</span>
             <span class="cert-arrow">→</span>
           </div>
           <div class="cert-item reveal-right delay-3 line-draw">
-            <span class="cert-issuer">FrontendMasters</span>
-            <span class="cert-name">Complete Intro to React, v9</span>
+            <span class="cert-issuer">Meta</span>
+            <span class="cert-name">Intro to Mobile Development</span>
             <span class="cert-arrow">→</span>
           </div>
           <div class="cert-item reveal-right delay-4 line-draw">
             <span class="cert-issuer">FrontendMasters</span>
-            <span class="cert-name">TypeScript: First Steps to Pro</span>
+            <span class="cert-name">Complete Intro to React, v9</span>
             <span class="cert-arrow">→</span>
           </div>
           <div class="cert-item reveal-right delay-5 line-draw">
+            <span class="cert-issuer">FrontendMasters</span>
+            <span class="cert-name">TypeScript: First Steps to Pro</span>
+            <span class="cert-arrow">→</span>
+          </div>
+          <div class="cert-item reveal-right delay-6 line-draw">
+            <span class="cert-issuer">FrontendMasters</span>
+            <span class="cert-name">Introduction to Node.js, v3</span>
+            <span class="cert-arrow">→</span>
+          </div>
+          <div class="cert-item reveal-right delay-7 line-draw">
+            <span class="cert-issuer">FrontendMasters</span>
+            <span class="cert-name">Build a Fullstack Next.js App, v4</span>
+            <span class="cert-arrow">→</span>
+          </div>
+          <div class="cert-item reveal-right delay-7 line-draw">
             <span class="cert-issuer">IBM</span>
             <span class="cert-name">Front-end & Web Development</span>
             <span class="cert-arrow">→</span>
           </div>
-          <div class="cert-item reveal-right delay-6 line-draw">
+          <div class="cert-item reveal-right delay-7 line-draw">
             <span class="cert-issuer">U. of Michigan</span>
             <span class="cert-name">Building Web Apps in PHP</span>
             <span class="cert-arrow">→</span>
@@ -2091,6 +2167,9 @@
         </div>
       </div>
     </section>
+
+    <!-- Divider -->
+    <div class="container"><div class="section-divider"></div></div>
 
     <!-- Experience -->
     <section class="experience container" id="experience">
