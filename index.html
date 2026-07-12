@@ -167,85 +167,32 @@
       }
 
       /* ======= REVEAL SYSTEM ======= */
-      /* Fade up */
+      /* Initial (pre-animation) states only — the reveal motion itself is
+         driven by GSAP + ScrollTrigger in the script below. */
       .reveal-up {
         opacity: 0;
         transform: translateY(60px);
-        transition:
-          opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .reveal-up.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* Fade left */
       .reveal-left {
         opacity: 0;
         transform: translateX(-80px);
-        transition:
-          opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .reveal-left.visible {
-        opacity: 1;
-        transform: translateX(0);
-      }
-
-      /* Fade right */
       .reveal-right {
         opacity: 0;
         transform: translateX(80px);
-        transition:
-          opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .reveal-right.visible {
-        opacity: 1;
-        transform: translateX(0);
-      }
-
-      /* Scale up */
       .reveal-scale {
         opacity: 0;
         transform: scale(0.85);
-        transition:
-          opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .reveal-scale.visible {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      /* Rotate in */
       .reveal-rotate {
         opacity: 0;
         transform: rotate(-5deg) translateY(40px);
-        transition:
-          opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .reveal-rotate.visible {
-        opacity: 1;
-        transform: rotate(0) translateY(0);
-      }
-
-      /* Blur in */
       .reveal-blur {
         opacity: 0;
         filter: blur(12px);
         transform: translateY(20px);
-        transition:
-          opacity 0.8s ease,
-          filter 0.8s ease,
-          transform 0.8s ease;
-      }
-      .reveal-blur.visible {
-        opacity: 1;
-        filter: blur(0);
-        transform: translateY(0);
       }
 
       /* Stagger delays */
@@ -471,18 +418,11 @@
         color: var(--accent);
       }
 
-      /* Hero letter animation */
+      /* Hero letter animation — initial state, animated via GSAP timeline */
       .hero-name .char {
         display: inline-block;
         opacity: 0;
         transform: translateY(50px);
-        animation: charIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
-      @keyframes charIn {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
       }
 
       .hero-socials {
@@ -2390,6 +2330,10 @@
       </p>
     </footer>
 
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
     <script>
       // ============ HAMBURGER MENU ============
       const navToggle = document.getElementById("navToggle");
@@ -2415,17 +2359,8 @@
         document.getElementById("scrollProgress").style.width = scrolled + "%";
       });
 
-      // ============ SCROLL REVEAL OBSERVER ============
-      const revealTypes = [
-        ".reveal-up",
-        ".reveal-left",
-        ".reveal-right",
-        ".reveal-scale",
-        ".reveal-rotate",
-        ".reveal-blur",
-        ".text-reveal-wrap",
-        ".line-draw",
-      ];
+      // ============ SCROLL REVEAL OBSERVER (line-draw + word reveal — GSAP/ScrollTrigger handles the transform-based reveals further below) ============
+      const revealTypes = [".text-reveal-wrap", ".line-draw"];
       const allReveals = document.querySelectorAll(revealTypes.join(","));
 
       const revealObserver = new IntersectionObserver(
@@ -2441,41 +2376,34 @@
 
       allReveals.forEach((el) => revealObserver.observe(el));
 
-      // ============ HERO NAME — LETTER-BY-LETTER ANIMATION ============
+      // ============ HERO NAME — SPLIT INTO CHARS (animated via GSAP timeline below) ============
       (function () {
         const nameEl = document.getElementById("heroName");
         const spans = nameEl.querySelectorAll("span");
-        let totalDelay = 0;
         spans.forEach((span) => {
           const text = span.textContent;
           // Preserve the dot span
           if (span.querySelector(".dot")) {
             const mainText = text.replace(".", "");
             span.innerHTML = "";
-            mainText.split("").forEach((char, i) => {
+            mainText.split("").forEach((char) => {
               const c = document.createElement("span");
               c.className = "char";
-              c.style.animationDelay = totalDelay + i * 0.04 + "s";
               c.textContent = char === " " ? "\u00A0" : char;
               span.appendChild(c);
             });
             const dot = document.createElement("span");
             dot.className = "dot char";
-            dot.style.animationDelay =
-              totalDelay + mainText.length * 0.04 + "s";
             dot.textContent = ".";
             span.appendChild(dot);
-            totalDelay += (mainText.length + 1) * 0.04;
           } else {
             span.innerHTML = "";
-            text.split("").forEach((char, i) => {
+            text.split("").forEach((char) => {
               const c = document.createElement("span");
               c.className = "char";
-              c.style.animationDelay = totalDelay + i * 0.04 + "s";
               c.textContent = char === " " ? "\u00A0" : char;
               span.appendChild(c);
             });
-            totalDelay += text.length * 0.04;
           }
         });
       })();
@@ -2591,29 +2519,6 @@
         });
 
         card.addEventListener("mouseleave", resetTilt);
-      });
-
-      // ============ MAGNETIC BUTTONS ============
-      document.querySelectorAll(".magnetic").forEach((el) => {
-        el.addEventListener("mousemove", (e) => {
-          const rect = el.getBoundingClientRect();
-          const x = (e.clientX - rect.left - rect.width / 2) * 0.3;
-          const y = (e.clientY - rect.top - rect.height / 2) * 0.3;
-          el.style.transform = `translate(${x}px, ${y}px)`;
-        });
-        el.addEventListener("mouseleave", () => {
-          el.style.transform = "";
-        });
-      });
-
-      // ============ PARALLAX ON SCROLL ============
-      window.addEventListener("scroll", () => {
-        const scrollY = window.scrollY;
-        document.querySelectorAll(".parallax-section").forEach((section) => {
-          const rect = section.getBoundingClientRect();
-          const speed = 0.03;
-          section.style.transform = `translateY(${rect.top * speed}px)`;
-        });
       });
 
       // ============ SMOOTH NAV SCROLL ============
@@ -2784,6 +2689,121 @@
           document.getElementById("attachLabel").textContent = "";
           document.getElementById("attachFile").value = "";
         }, 2500);
+      });
+
+      // ============ GSAP ANIMATIONS ============
+      gsap.registerPlugin(ScrollTrigger);
+
+      const motionMM = gsap.matchMedia();
+
+      motionMM.add("(prefers-reduced-motion: no-preference)", () => {
+        // ---- Hero entrance timeline ----
+        const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        heroTl
+          .from(".hero-name .char", {
+            y: 50,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.035,
+          })
+          .from(".hero-kicker", { y: 20, opacity: 0, duration: 0.7 }, "-=0.25")
+          .from(
+            ".hero-stats > div",
+            { y: -20, opacity: 0, duration: 0.6, stagger: 0.12 },
+            "-=0.55",
+          )
+          .from(".hero-scroll", { opacity: 0, duration: 0.6 }, "-=0.3")
+          .from(".hero-portrait img", { opacity: 0, duration: 1 }, "-=0.8");
+
+        // ---- Scroll-triggered reveals (replaces the old CSS-transition reveal system) ----
+        const revealConfigs = [
+          { selector: ".reveal-up", from: { y: 60, opacity: 0 } },
+          { selector: ".reveal-left", from: { x: -80, opacity: 0 } },
+          { selector: ".reveal-right", from: { x: 80, opacity: 0 } },
+          { selector: ".reveal-scale", from: { scale: 0.85, opacity: 0 } },
+          {
+            selector: ".reveal-rotate",
+            from: { rotate: -5, y: 40, opacity: 0 },
+          },
+          {
+            selector: ".reveal-blur",
+            from: { y: 20, opacity: 0, filter: "blur(12px)" },
+          },
+        ];
+
+        revealConfigs.forEach(({ selector, from }) => {
+          document.querySelectorAll(selector).forEach((el) => {
+            const delayClass = [...el.classList].find((c) =>
+              /^delay-\d$/.test(c),
+            );
+            const delay = delayClass
+              ? parseInt(delayClass.split("-")[1], 10) * 0.1
+              : 0;
+            gsap.fromTo(el, from, {
+              y: 0,
+              x: 0,
+              scale: 1,
+              rotate: 0,
+              opacity: 1,
+              filter: "blur(0px)",
+              duration: 0.9,
+              delay,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: el,
+                start: "top 88%",
+                toggleActions: "play none none reverse",
+              },
+            });
+          });
+        });
+
+        // ---- Scroll-scrubbed parallax ----
+        gsap.utils.toArray(".parallax-section").forEach((section) => {
+          gsap.to(section, {
+            yPercent: 4,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+        });
+
+        // ---- Magnetic buttons (spring-eased via gsap.quickTo) ----
+        document.querySelectorAll(".magnetic").forEach((el) => {
+          const xTo = gsap.quickTo(el, "x", {
+            duration: 0.4,
+            ease: "power3.out",
+          });
+          const yTo = gsap.quickTo(el, "y", {
+            duration: 0.4,
+            ease: "power3.out",
+          });
+          el.addEventListener("mousemove", (e) => {
+            const rect = el.getBoundingClientRect();
+            xTo((e.clientX - rect.left - rect.width / 2) * 0.3);
+            yTo((e.clientY - rect.top - rect.height / 2) * 0.3);
+          });
+          el.addEventListener("mouseleave", () => {
+            xTo(0);
+            yTo(0);
+          });
+        });
+
+        return () => {
+          ScrollTrigger.getAll().forEach((t) => t.kill());
+        };
+      });
+
+      // Reduced-motion users: skip the motion, just show everything immediately.
+      motionMM.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(
+          ".hero-name .char, .hero-kicker, .hero-stats > div, .hero-scroll, .hero-portrait img, .reveal-up, .reveal-left, .reveal-right, .reveal-scale, .reveal-rotate, .reveal-blur",
+          { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0, filter: "blur(0px)" },
+        );
       });
     </script>
   </body>
