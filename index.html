@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -340,6 +340,25 @@
       }
       .nav-links a:hover::after {
         width: 100%;
+      }
+      .nav-links a.nav-cv-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 18px;
+        background: var(--text-primary);
+        color: var(--bg-primary);
+        border-radius: 4px;
+        font-weight: 600;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+      }
+      .nav-links a.nav-cv-btn::after {
+        display: none;
+      }
+      .nav-links a.nav-cv-btn:hover {
+        color: var(--bg-primary);
+        transform: translateY(-2px);
+        opacity: 0.85;
       }
       .book-call {
         color: var(--text-primary);
@@ -1647,6 +1666,10 @@
         .nav-links a::after {
           display: none;
         }
+        .nav-links a.nav-cv-btn {
+          justify-content: center;
+          margin-top: 12px;
+        }
         .navbar {
           position: fixed;
         }
@@ -1672,6 +1695,10 @@
         <a href="#experience">Experience</a>
         <a href="#testimonial">Recommendations</a>
         <a href="#contact">Contact</a>
+        <a href="resume-MD Naimure Rahaman Emon.pdf" download class="nav-cv-btn">
+          Download CV
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m6 11 6 6 6-6"/><path d="M5 21h14"/></svg>
+        </a>
       </div>
     </nav>
 
